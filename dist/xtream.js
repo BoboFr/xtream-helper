@@ -39,11 +39,11 @@ class Xtream {
         _Xtream_password.set(this, void 0);
         _Xtream_buildUrl.set(this, void 0);
         if (!baseUrl) {
-            throw new Error('Base URL is required');
+            throw new Error("Base URL is required");
         }
         __classPrivateFieldSet(this, _Xtream_baseUrl, baseUrl.trim(), "f");
-        if (!__classPrivateFieldGet(this, _Xtream_baseUrl, "f").endsWith('/')) {
-            __classPrivateFieldSet(this, _Xtream_baseUrl, __classPrivateFieldGet(this, _Xtream_baseUrl, "f") + '/', "f");
+        if (!__classPrivateFieldGet(this, _Xtream_baseUrl, "f").endsWith("/")) {
+            __classPrivateFieldSet(this, _Xtream_baseUrl, __classPrivateFieldGet(this, _Xtream_baseUrl, "f") + "/", "f");
         }
         __classPrivateFieldSet(this, _Xtream_username, auth.username.trim(), "f");
         __classPrivateFieldSet(this, _Xtream_password, auth.password.trim(), "f");
@@ -55,7 +55,11 @@ class Xtream {
      */
     getProfile() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_user_info`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_user_info`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             return yield response.json();
         });
@@ -66,7 +70,11 @@ class Xtream {
      */
     getLiveStreams() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_live_streams`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_live_streams`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             const data = yield response.json();
             data.map((item) => {
@@ -81,9 +89,14 @@ class Xtream {
      */
     getVODStreams() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_vod_streams`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_vod_streams`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             const data = yield response.json();
+            console.log(response.status);
             data.map((item) => {
                 item.url = `${__classPrivateFieldGet(this, _Xtream_baseUrl, "f")}movie/${__classPrivateFieldGet(this, _Xtream_username, "f")}/${__classPrivateFieldGet(this, _Xtream_password, "f")}/${item.stream_id}.${item.container_extension}`;
             });
@@ -96,7 +109,11 @@ class Xtream {
      */
     getSeries() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_series`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_series`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             const data = yield response.json();
             data.map((item) => {
@@ -112,11 +129,15 @@ class Xtream {
      */
     getSerieInfo(serie_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_series_info&series_id=${serie_id}`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_series_info&series_id=${serie_id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             const data = yield response.json();
             for (const k in Object.keys(data.episodes)) {
-                if (typeof data.episodes[k] === 'object') {
+                if (typeof data.episodes[k] === "object") {
                     data.episodes[k].map((item) => {
                         item.url = `${__classPrivateFieldGet(this, _Xtream_baseUrl, "f")}series/${__classPrivateFieldGet(this, _Xtream_username, "f")}/${__classPrivateFieldGet(this, _Xtream_password, "f")}/${item.id}.${item.container_extension}`;
                     });
@@ -126,12 +147,46 @@ class Xtream {
         });
     }
     /**
-     * Fetches the categories.
+     * Fetches the live categories.
      * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
      */
     getCategories() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_live_categories`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_live_categories`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
+            return yield response.json();
+        });
+    }
+    /**
+     * Fetches the VOD categories.
+     * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+     */
+    getVODCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_vod_categories`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
+            return yield response.json();
+        });
+    }
+    /**
+     * Fetches the series categories.
+     * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+     */
+    getSeriesCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_series_categories`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             return yield response.json();
         });
@@ -142,7 +197,11 @@ class Xtream {
      */
     getServerInfo() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_server_info`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_server_info`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             return yield response.json();
         });
@@ -153,7 +212,11 @@ class Xtream {
      */
     getUserInfo() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_user_info`);
+            const response = yield fetch(`${__classPrivateFieldGet(this, _Xtream_buildUrl, "f")}get_user_info`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
             yield __classPrivateFieldGet(this, _Xtream_instances, "m", _Xtream_handleErrors).call(this, response);
             return yield response.json();
         });

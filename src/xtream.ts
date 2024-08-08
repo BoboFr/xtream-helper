@@ -138,11 +138,39 @@ export class Xtream {
   }
 
   /**
-   * Fetches the categories.
+   * Fetches the live categories.
    * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
    */
   async getCategories(): Promise<Category[]> {
     const response = await fetch(`${this.#buildUrl}get_live_categories`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    await this.#handleErrors(response);
+    return await response.json();
+  }
+
+  /**
+   * Fetches the VOD categories.
+   * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+   */
+  async getVODCategories(): Promise<Category[]> {
+    const response = await fetch(`${this.#buildUrl}get_vod_categories`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    await this.#handleErrors(response);
+    return await response.json();
+  }
+
+  /**
+   * Fetches the series categories.
+   * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+   */
+  async getSeriesCategories(): Promise<Category[]> {
+    const response = await fetch(`${this.#buildUrl}get_series_categories`, {
       headers: {
         "Content-Type": "application/json",
       },
