@@ -45,10 +45,20 @@ export declare class Xtream {
      */
     getSerieInfo(serie_id: number): Promise<SerieInfo>;
     /**
-     * Fetches the categories.
+     * Fetches the live categories.
      * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
      */
     getCategories(): Promise<Category[]>;
+    /**
+     * Fetches the VOD categories.
+     * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+     */
+    getVODCategories(): Promise<Category[]>;
+    /**
+     * Fetches the series categories.
+     * @returns {Promise<Category[]>} A promise that resolves to an array of categories.
+     */
+    getSeriesCategories(): Promise<Category[]>;
     /**
      * Fetches the server info.
      * @returns {Promise<Profile>} A promise that resolves to the server info.
